@@ -23,11 +23,17 @@ static int gettok() {
   }
 
   if (isdigit(LastChar) || LastChar == '.') {   // Number: [0-9.]+
+    int InvalidCharCNT = 0;
     std::string NumStr;
     do {
+      InvalidCharCNT += (LastChar == '.') || (!isdigit(LastChar) && LastChar != '.');
       NumStr += LastChar;
       LastChar = getchar();
     } while (isdigit(LastChar) || LastChar == '.');
+
+    // Eat until the end of the token
+    if (InvalidCharCNT > 1)
+      return tok_unknown;
   
     NumVal = strtod(NumStr.c_str(), 0);
     return tok_number;
@@ -53,10 +59,15 @@ static int gettok() {
   return ThisChar;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+  std::string progname;
+  if (argc < 2)
+    progname = "testprog/prog.kalei";
+  else
+    progname = argv[1];
   int type;
-  freopen("prog.kalei", "r", stdin);
+  freopen(progname.c_str(), "r", stdin);
   while ((type = gettok()) != tok_eof)
     printf("token_type: %d\n", type);
 

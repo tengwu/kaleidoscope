@@ -10,6 +10,9 @@ enum Token {
   // primary
   tok_identifier = -4,
   tok_number = -5,
+
+  // unknown
+  tok_unknown = -255
 };
 
 static std::string IdentifierStr; // Filled in if tok_identifier
